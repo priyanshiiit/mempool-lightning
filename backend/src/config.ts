@@ -1,9 +1,9 @@
-const configFile = require('../mempool-config.json');
+const configFile = require("../mempool-config.json");
 
 interface IConfig {
   MEMPOOL: {
-    NETWORK: 'mainnet' | 'testnet' | 'signet' | 'liquid';
-    BACKEND: 'esplora' | 'electrum' | 'none';
+    NETWORK: "mainnet" | "testnet" | "signet" | "liquid";
+    BACKEND: "esplora" | "electrum" | "none";
     HTTP_PORT: number;
     SPAWN_CLUSTER_PROCS: number;
     API_URL_PREFIX: string;
@@ -39,7 +39,7 @@ interface IConfig {
   };
   DATABASE: {
     ENABLED: boolean;
-    HOST: string,
+    HOST: string;
     PORT: number;
     DATABASE: string;
     USERNAME: string;
@@ -49,7 +49,15 @@ interface IConfig {
     ENABLED: boolean;
     HOST: string;
     PORT: number;
-    MIN_PRIORITY: 'emerg' | 'alert' | 'crit' | 'err' |'warn' | 'notice' | 'info' | 'debug';
+    MIN_PRIORITY:
+      | "emerg"
+      | "alert"
+      | "crit"
+      | "err"
+      | "warn"
+      | "notice"
+      | "info"
+      | "debug";
     FACILITY: string;
   };
   STATISTICS: {
@@ -63,78 +71,78 @@ interface IConfig {
 }
 
 const defaults: IConfig = {
-  'MEMPOOL': {
-    'NETWORK': 'mainnet',
-    'BACKEND': 'none',
-    'HTTP_PORT': 8999,
-    'SPAWN_CLUSTER_PROCS': 0,
-    'API_URL_PREFIX': '/api/v1/',
-    'POLL_RATE_MS': 2000,
-    'CACHE_DIR': './cache',
-    'CLEAR_PROTECTION_MINUTES': 20,
-    'RECOMMENDED_FEE_PERCENTILE': 50,
+  MEMPOOL: {
+    NETWORK: "testnet",
+    BACKEND: "none",
+    HTTP_PORT: 8999,
+    SPAWN_CLUSTER_PROCS: 0,
+    API_URL_PREFIX: "/api/v1/",
+    POLL_RATE_MS: 2000,
+    CACHE_DIR: "./cache",
+    CLEAR_PROTECTION_MINUTES: 20,
+    RECOMMENDED_FEE_PERCENTILE: 50,
   },
-  'ESPLORA': {
-    'REST_API_URL': 'http://127.0.0.1:3000',
+  ESPLORA: {
+    REST_API_URL: "http://127.0.0.1:3000",
   },
-  'ELECTRUM': {
-    'HOST': '127.0.0.1',
-    'PORT': 3306,
-    'TLS_ENABLED': true,
+  ELECTRUM: {
+    HOST: "127.0.0.1",
+    PORT: 3306,
+    TLS_ENABLED: true,
   },
-  'CORE_RPC': {
-    'HOST': '127.0.0.1',
-    'PORT': 8332,
-    'USERNAME': 'mempool',
-    'PASSWORD': 'mempool'
+  CORE_RPC: {
+    HOST: "127.0.0.1",
+    PORT: 8332,
+    USERNAME: "mempool",
+    PASSWORD: "mempool",
   },
-  'LND': {
-    'HOST': '127.0.0.1',
-    'PORT': 9735
+  LND: {
+    HOST: "127.0.0.1",
+    PORT: 9735,
   },
-  'CORE_RPC_MINFEE': {
-    'ENABLED': false,
-    'HOST': '127.0.0.1',
-    'PORT': 8332,
-    'USERNAME': 'mempool',
-    'PASSWORD': 'mempool'
+  CORE_RPC_MINFEE: {
+    ENABLED: false,
+    HOST: "127.0.0.1",
+    PORT: 8332,
+    USERNAME: "mempool",
+    PASSWORD: "mempool",
   },
-  'DATABASE': {
-    'ENABLED': true,
-    'HOST': '127.0.0.1',
-    'PORT': 3306,
-    'DATABASE': 'mempool',
-    'USERNAME': 'mempool',
-    'PASSWORD': 'mempool'
+  DATABASE: {
+    ENABLED: true,
+    HOST: "127.0.0.1",
+    PORT: 3306,
+    DATABASE: "mempool",
+    USERNAME: "mempool",
+    PASSWORD: "mempool",
   },
-  'SYSLOG': {
-    'ENABLED': true,
-    'HOST': '127.0.0.1',
-    'PORT': 514,
-    'MIN_PRIORITY': 'info',
-    'FACILITY': 'local7'
+  SYSLOG: {
+    ENABLED: true,
+    HOST: "127.0.0.1",
+    PORT: 514,
+    MIN_PRIORITY: "info",
+    FACILITY: "local7",
   },
-  'STATISTICS': {
-    'ENABLED': true,
-    'TX_PER_SECOND_SAMPLE_PERIOD': 150
+  STATISTICS: {
+    ENABLED: true,
+    TX_PER_SECOND_SAMPLE_PERIOD: 150,
   },
-  'BISQ': {
-    'ENABLED': false,
-    'DATA_PATH': '/bisq/statsnode-data/btc_mainnet/db'
+  BISQ: {
+    ENABLED: false,
+    DATA_PATH: "/bisq/statsnode-data/btc_mainnet/db",
   },
 };
 
 class Config implements IConfig {
-  MEMPOOL: IConfig['MEMPOOL'];
-  ESPLORA: IConfig['ESPLORA'];
-  ELECTRUM: IConfig['ELECTRUM'];
-  CORE_RPC: IConfig['CORE_RPC'];
-  LND: IConfig['LND'];
-  CORE_RPC_MINFEE: IConfig['CORE_RPC_MINFEE'];
-  DATABASE: IConfig['DATABASE'];
-  SYSLOG: IConfig['SYSLOG'];
-  STATISTICS: IConfig['STATISTICS'];
-  BISQ: IConfig['BISQ'];
+  MEMPOOL: IConfig["MEMPOOL"];
+  ESPLORA: IConfig["ESPLORA"];
+  ELECTRUM: IConfig["ELECTRUM"];
+  CORE_RPC: IConfig["CORE_RPC"];
+  LND: IConfig["LND"];
+  CORE_RPC_MINFEE: IConfig["CORE_RPC_MINFEE"];
+  DATABASE: IConfig["DATABASE"];
+  SYSLOG: IConfig["SYSLOG"];
+  STATISTICS: IConfig["STATISTICS"];
+  BISQ: IConfig["BISQ"];
 
   constructor() {
     const configs = this.merge(configFile, defaults);
@@ -153,12 +161,12 @@ class Config implements IConfig {
   merge = (...objects: object[]): IConfig => {
     // @ts-ignore
     return objects.reduce((prev, next) => {
-      Object.keys(prev).forEach(key => {
+      Object.keys(prev).forEach((key) => {
         next[key] = { ...next[key], ...prev[key] };
       });
       return next;
     });
-  }
+  };
 }
 
 export default new Config();
