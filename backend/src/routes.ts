@@ -126,7 +126,7 @@ class Routes {
 
   //LND
   public async getGraphInfo(req: Request, res: Response) {
-    let result=await lnd.getGraphInfo();
+    let result=await lnd.$getGraphInfo();
     res.send(result);
   }
 
