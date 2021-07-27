@@ -37,6 +37,7 @@
     "locutus": "^2.0.12",
     "mysql2": "2.2.5",
     "node-worker-threads-pool": "^1.4.3",
+    "request": "^2.88.2",
     "ws": "^7.4.6"
   },
   "devDependencies": {

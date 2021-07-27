@@ -194,7 +194,13 @@ class Server {
           res.status(500).end();
         }
       })
+      
+    //LND 
+    .get('graph-info', routes.getGraphInfo)
+
     ;
+
+   
 
     if (config.STATISTICS.ENABLED && config.DATABASE.ENABLED) {
       this.app

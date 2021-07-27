@@ -5,6 +5,7 @@ import feeApi from './api/fee-api';
 import backendInfo from './api/backend-info';
 import mempoolBlocks from './api/mempool-blocks';
 import mempool from './api/mempool';
+import lnd from './api/lnd/lnd-api';
 import bisq from './api/bisq/bisq';
 import websocketHandler from './api/websocket-handler';
 import bisqMarket from './api/bisq/markets-api';
@@ -121,6 +122,12 @@ class Routes {
 
   public getBackendInfo(req: Request, res: Response) {
     res.json(backendInfo.getBackendInfo());
+  }
+
+  //LND
+  public getGraphInfo(req: Request, res: Response) {
+    const result = lnd.getGraphInfo();
+    res.send(result);
   }
 
   public getBisqStats(req: Request, res: Response) {
