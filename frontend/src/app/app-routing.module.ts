@@ -19,12 +19,18 @@ import { TermsOfServiceComponent } from './components/terms-of-service/terms-of-
 import { TrademarkPolicyComponent } from './components/trademark-policy/trademark-policy.component';
 import { BisqMasterPageComponent } from './components/bisq-master-page/bisq-master-page.component';
 import { SponsorComponent } from './components/sponsor/sponsor.component';
+import { LightningComponent } from './lightning/lightning.component';
+
 
 let routes: Routes = [
   {
     path: '',
     component: MasterPageComponent,
     children: [
+      {
+        path: 'lightning',
+        component: LightningComponent
+      }, 
       {
         path: '',
         component: StartComponent,
