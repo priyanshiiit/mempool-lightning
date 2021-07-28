@@ -9,5 +9,6 @@
     min_channel_size: string;
     max_channel_size: string;
     median_channel_size_sat: string;
+    num_zombie_chans: string;
   }
 
