@@ -5,7 +5,7 @@ import feeApi from './api/fee-api';
 import backendInfo from './api/backend-info';
 import mempoolBlocks from './api/mempool-blocks';
 import mempool from './api/mempool';
-import lnd from './api/lnd/lnd-api';
+import lnd from './api/lightning/lightning-api';
 import bisq from './api/bisq/bisq';
 import websocketHandler from './api/websocket-handler';
 import bisqMarket from './api/bisq/markets-api';

@@ -1,6 +1,6 @@
 import config from "../../config";
-import { AbstractLndApi } from "./lnd-api-abstract-factory";
-import { GraphInfo } from "./lnd-api.interface";
+import { AbstractLndApi } from "./lightning-api-abstract-factory";
+import { GraphInfo } from "./lightning-api.interface";
 const request = require("request");
 // import blocks from '../blocks';
 // import mempool from '../mempool';
