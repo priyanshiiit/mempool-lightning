@@ -1,3 +1,4 @@
+export namespace ILightningApi {
   export interface GraphInfo {
     graph_diameter: number;
     avg_out_degree: number;
@@ -11,4 +12,4 @@
     median_channel_size_sat: string;
     num_zombie_chans: string;
   }
-
+}
