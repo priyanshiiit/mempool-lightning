@@ -96,4 +96,8 @@ export class ApiService {
   getDifficultyAdjustment$(): Observable<DifficultyAdjustment> {
     return this.httpClient.get<DifficultyAdjustment>(this.apiBaseUrl + this.apiBasePath + '/api/v1/difficulty-adjustment');
   }
+
+  getGraphInfo$():Observable<any> {
+    return this.httpClient.get<any>(this.apiBaseUrl + this.apiBasePath + 'api/v1/graph-info');
+  }
 }
