@@ -1,23 +1,23 @@
-import config from './config';
-import { Request, Response } from 'express';
-import statistics from './api/statistics';
-import feeApi from './api/fee-api';
-import backendInfo from './api/backend-info';
-import mempoolBlocks from './api/mempool-blocks';
-import mempool from './api/mempool';
-import lnd from './api/lnd/lnd-api';
-import bisq from './api/bisq/bisq';
-import websocketHandler from './api/websocket-handler';
-import bisqMarket from './api/bisq/markets-api';
-import { RequiredSpec, TransactionExtended } from './mempool.interfaces';
-import { MarketsApiError } from './api/bisq/interfaces';
-import { IEsploraApi } from './api/bitcoin/esplora-api.interface';
-import logger from './logger';
-import bitcoinApi from './api/bitcoin/bitcoin-api-factory';
-import transactionUtils from './api/transaction-utils';
-import blocks from './api/blocks';
-import loadingIndicators from './api/loading-indicators';
-import { Common } from './api/common';
+import config from "./config";
+import { Request, Response } from "express";
+import statistics from "./api/statistics";
+import feeApi from "./api/fee-api";
+import backendInfo from "./api/backend-info";
+import mempoolBlocks from "./api/mempool-blocks";
+import mempool from "./api/mempool";
+import bisq from "./api/bisq/bisq";
+import websocketHandler from "./api/websocket-handler";
+import bisqMarket from "./api/bisq/markets-api";
+import { RequiredSpec, TransactionExtended } from "./mempool.interfaces";
+import { MarketsApiError } from "./api/bisq/interfaces";
+import { IEsploraApi } from "./api/bitcoin/esplora-api.interface";
+import logger from "./logger";
+import bitcoinApi from "./api/bitcoin/bitcoin-api-factory";
+import lightningApi from "./api/lightning/lightning-api-factory";
+import transactionUtils from "./api/transaction-utils";
+import blocks from "./api/blocks";
+import loadingIndicators from "./api/loading-indicators";
+import { Common } from "./api/common";
 
 class Routes {
   constructor() {}
@@ -28,27 +28,27 @@ class Routes {
   }
 
   public get24HStatistics(req: Request, res: Response) {
-    res.json(statistics.getCache()['24h']);
+    res.json(statistics.getCache()["24h"]);
   }
 
   public get1WHStatistics(req: Request, res: Response) {
-    res.json(statistics.getCache()['1w']);
+    res.json(statistics.getCache()["1w"]);
   }
 
   public get1MStatistics(req: Request, res: Response) {
-    res.json(statistics.getCache()['1m']);
+    res.json(statistics.getCache()["1m"]);
   }
 
   public get3MStatistics(req: Request, res: Response) {
-    res.json(statistics.getCache()['3m']);
+    res.json(statistics.getCache()["3m"]);
   }
 
   public get6MStatistics(req: Request, res: Response) {
-    res.json(statistics.getCache()['6m']);
+    res.json(statistics.getCache()["6m"]);
   }
 
   public get1YStatistics(req: Request, res: Response) {
-    res.json(statistics.getCache()['1y']);
+    res.json(statistics.getCache()["1y"]);
   }
 
   public getInitData(req: Request, res: Response) {
@@ -63,7 +63,7 @@ class Routes {
   public async getRecommendedFees(req: Request, res: Response) {
     if (!mempool.isInSync()) {
       res.statusCode = 503;
-      res.send('Service Unavailable');
+      res.send("Service Unavailable");
       return;
     }
     const result = feeApi.getRecommendedFee();
@@ -81,12 +81,12 @@ class Routes {
 
   public getTransactionTimes(req: Request, res: Response) {
     if (!Array.isArray(req.query.txId)) {
-      res.status(500).send('Not an array');
+      res.status(500).send("Not an array");
       return;
     }
     const txIds: string[] = [];
     for (const _txId in req.query.txId) {
-      if (typeof req.query.txId[_txId] === 'string') {
+      if (typeof req.query.txId[_txId] === "string") {
         txIds.push(req.query.txId[_txId].toString());
       }
     }
@@ -115,7 +115,10 @@ class Routes {
       return;
     }
 
-    const cpfpInfo = Common.setRelativesAndGetCpfpInfo(tx, mempool.getMempool());
+    const cpfpInfo = Common.setRelativesAndGetCpfpInfo(
+      tx,
+      mempool.getMempool()
+    );
 
     res.json(cpfpInfo);
   }
@@ -124,10 +127,14 @@ class Routes {
     res.json(backendInfo.getBackendInfo());
   }
 
-  //LND
+  //Lightning
   public async getGraphInfo(req: Request, res: Response) {
-    let result=await lnd.$getGraphInfo();
-    res.send(result);
+    try {
+      let result = await lightningApi.$getGraphInfo();
+      res.json(result);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
   }
 
   public getBisqStats(req: Request, res: Response) {
@@ -137,7 +144,7 @@ class Routes {
 
   public getBisqTip(req: Request, res: Response) {
     const result = bisq.getLatestBlockHeight();
-    res.type('text/plain');
+    res.type("text/plain");
     res.send(result.toString());
   }
 
@@ -146,7 +153,7 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(404).send('Bisq transaction not found');
+      res.status(404).send("Bisq transaction not found");
     }
   }
 
@@ -154,20 +161,23 @@ class Routes {
     const types: string[] = [];
     req.query.types = req.query.types || [];
     if (!Array.isArray(req.query.types)) {
-      res.status(500).send('Types is not an array');
+      res.status(500).send("Types is not an array");
       return;
     }
 
     for (const _type in req.query.types) {
-      if (typeof req.query.types[_type] === 'string') {
+      if (typeof req.query.types[_type] === "string") {
         types.push(req.query.types[_type].toString());
       }
     }
 
     const index = parseInt(req.params.index, 10) || 0;
-    const length = parseInt(req.params.length, 10) > 100 ? 100 : parseInt(req.params.length, 10) || 25;
+    const length =
+      parseInt(req.params.length, 10) > 100
+        ? 100
+        : parseInt(req.params.length, 10) || 25;
     const [transactions, count] = bisq.getTransactions(index, length, types);
-    res.header('X-Total-Count', count.toString());
+    res.header("X-Total-Count", count.toString());
     res.json(transactions);
   }
 
@@ -176,15 +186,18 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(404).send('Bisq block not found');
+      res.status(404).send("Bisq block not found");
     }
   }
 
   public getBisqBlocks(req: Request, res: Response) {
     const index = parseInt(req.params.index, 10) || 0;
-    const length = parseInt(req.params.length, 10) > 100 ? 100 : parseInt(req.params.length, 10) || 25;
+    const length =
+      parseInt(req.params.length, 10) > 100
+        ? 100
+        : parseInt(req.params.length, 10) || 25;
     const [transactions, count] = bisq.getBlocks(index, length);
-    res.header('X-Total-Count', count.toString());
+    res.header("X-Total-Count", count.toString());
     res.json(transactions);
   }
 
@@ -193,15 +206,15 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(404).send('Bisq address not found');
+      res.status(404).send("Bisq address not found");
     }
   }
 
   public getBisqMarketCurrencies(req: Request, res: Response) {
     const constraints: RequiredSpec = {
-      'type': {
+      type: {
         required: false,
-        types: ['crypto', 'fiat', 'all']
+        types: ["crypto", "fiat", "all"],
       },
     };
 
@@ -215,15 +228,17 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketCurrencies error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketCurrencies error"));
     }
   }
 
   public getBisqMarketDepth(req: Request, res: Response) {
     const constraints: RequiredSpec = {
-      'market': {
+      market: {
         required: true,
-        types: ['@string']
+        types: ["@string"],
       },
     };
 
@@ -237,7 +252,9 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketDepth error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketDepth error"));
     }
   }
 
@@ -246,44 +263,46 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketMarkets error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketMarkets error"));
     }
   }
 
   public getBisqMarketTrades(req: Request, res: Response) {
     const constraints: RequiredSpec = {
-      'market': {
+      market: {
         required: true,
-        types: ['@string']
+        types: ["@string"],
       },
-      'timestamp_from': {
+      timestamp_from: {
         required: false,
-        types: ['@number']
+        types: ["@number"],
       },
-      'timestamp_to': {
+      timestamp_to: {
         required: false,
-        types: ['@number']
+        types: ["@number"],
       },
-      'trade_id_to': {
+      trade_id_to: {
         required: false,
-        types: ['@string']
+        types: ["@string"],
       },
-      'trade_id_from': {
+      trade_id_from: {
         required: false,
-        types: ['@string']
+        types: ["@string"],
       },
-      'direction': {
+      direction: {
         required: false,
-        types: ['buy', 'sell']
+        types: ["buy", "sell"],
       },
-      'limit': {
+      limit: {
         required: false,
-        types: ['@number']
+        types: ["@number"],
       },
-      'sort': {
+      sort: {
         required: false,
-        types: ['asc', 'desc']
-      }
+        types: ["asc", "desc"],
+      },
     };
 
     const p = this.parseRequestParameters(req.query, constraints);
@@ -292,24 +311,34 @@ class Routes {
       return;
     }
 
-    const result = bisqMarket.getTrades(p.market, p.timestamp_from,
-      p.timestamp_to, p.trade_id_from, p.trade_id_to, p.direction, p.limit, p.sort);
+    const result = bisqMarket.getTrades(
+      p.market,
+      p.timestamp_from,
+      p.timestamp_to,
+      p.trade_id_from,
+      p.trade_id_to,
+      p.direction,
+      p.limit,
+      p.sort
+    );
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketTrades error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketTrades error"));
     }
   }
 
   public getBisqMarketOffers(req: Request, res: Response) {
     const constraints: RequiredSpec = {
-      'market': {
+      market: {
         required: true,
-        types: ['@string']
+        types: ["@string"],
       },
-      'direction': {
+      direction: {
         required: false,
-        types: ['buy', 'sell']
+        types: ["buy", "sell"],
       },
     };
 
@@ -323,35 +352,47 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketOffers error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketOffers error"));
     }
   }
 
   public getBisqMarketVolumes(req: Request, res: Response) {
     const constraints: RequiredSpec = {
-      'market': {
+      market: {
         required: false,
-        types: ['@string']
+        types: ["@string"],
       },
-      'interval': {
+      interval: {
         required: false,
-        types: ['minute', 'half_hour', 'hour', 'half_day', 'day', 'week', 'month', 'year', 'auto']
+        types: [
+          "minute",
+          "half_hour",
+          "hour",
+          "half_day",
+          "day",
+          "week",
+          "month",
+          "year",
+          "auto",
+        ],
       },
-      'timestamp_from': {
+      timestamp_from: {
         required: false,
-        types: ['@number']
+        types: ["@number"],
       },
-      'timestamp_to': {
+      timestamp_to: {
         required: false,
-        types: ['@number']
+        types: ["@number"],
       },
-      'milliseconds': {
+      milliseconds: {
         required: false,
-        types: ['@boolean']
+        types: ["@boolean"],
       },
-      'timestamp': {
+      timestamp: {
         required: false,
-        types: ['no', 'yes']
+        types: ["no", "yes"],
       },
     };
 
@@ -361,39 +402,58 @@ class Routes {
       return;
     }
 
-    const result = bisqMarket.getVolumes(p.market, p.timestamp_from, p.timestamp_to, p.interval, p.milliseconds, p.timestamp);
+    const result = bisqMarket.getVolumes(
+      p.market,
+      p.timestamp_from,
+      p.timestamp_to,
+      p.interval,
+      p.milliseconds,
+      p.timestamp
+    );
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketVolumes error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketVolumes error"));
     }
   }
 
   public getBisqMarketHloc(req: Request, res: Response) {
     const constraints: RequiredSpec = {
-      'market': {
+      market: {
         required: true,
-        types: ['@string']
+        types: ["@string"],
       },
-      'interval': {
+      interval: {
         required: false,
-        types: ['minute', 'half_hour', 'hour', 'half_day', 'day', 'week', 'month', 'year', 'auto']
+        types: [
+          "minute",
+          "half_hour",
+          "hour",
+          "half_day",
+          "day",
+          "week",
+          "month",
+          "year",
+          "auto",
+        ],
       },
-      'timestamp_from': {
+      timestamp_from: {
         required: false,
-        types: ['@number']
+        types: ["@number"],
       },
-      'timestamp_to': {
+      timestamp_to: {
         required: false,
-        types: ['@number']
+        types: ["@number"],
       },
-      'milliseconds': {
+      milliseconds: {
         required: false,
-        types: ['@boolean']
+        types: ["@boolean"],
       },
-      'timestamp': {
+      timestamp: {
         required: false,
-        types: ['no', 'yes']
+        types: ["no", "yes"],
       },
     };
 
@@ -403,19 +463,28 @@ class Routes {
       return;
     }
 
-    const result = bisqMarket.getHloc(p.market, p.interval, p.timestamp_from, p.timestamp_to, p.milliseconds, p.timestamp);
+    const result = bisqMarket.getHloc(
+      p.market,
+      p.interval,
+      p.timestamp_from,
+      p.timestamp_to,
+      p.milliseconds,
+      p.timestamp
+    );
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketHloc error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketHloc error"));
     }
   }
 
   public getBisqMarketTicker(req: Request, res: Response) {
     const constraints: RequiredSpec = {
-      'market': {
+      market: {
         required: false,
-        types: ['@string']
+        types: ["@string"],
       },
     };
 
@@ -429,7 +498,9 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketTicker error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketTicker error"));
     }
   }
 
@@ -438,32 +509,37 @@ class Routes {
     if (result) {
       res.json(result);
     } else {
-      res.status(500).json(this.getBisqMarketErrorResponse('getBisqMarketVolumes7d error'));
+      res
+        .status(500)
+        .json(this.getBisqMarketErrorResponse("getBisqMarketVolumes7d error"));
     }
   }
 
-  private parseRequestParameters(requestParams: object, params: RequiredSpec): { [name: string]: any; } {
+  private parseRequestParameters(
+    requestParams: object,
+    params: RequiredSpec
+  ): { [name: string]: any } {
     const final = {};
     for (const i in params) {
       if (params.hasOwnProperty(i)) {
         if (params[i].required && requestParams[i] === undefined) {
-          return { error: i + ' parameter missing'};
+          return { error: i + " parameter missing" };
         }
-        if (typeof requestParams[i] === 'string') {
-          const str = (requestParams[i] || '').toString().toLowerCase();
-          if (params[i].types.indexOf('@number') > -1) {
-            const number = parseInt((str).toString(), 10);
+        if (typeof requestParams[i] === "string") {
+          const str = (requestParams[i] || "").toString().toLowerCase();
+          if (params[i].types.indexOf("@number") > -1) {
+            const number = parseInt(str.toString(), 10);
             final[i] = number;
-          } else if (params[i].types.indexOf('@string') > -1) {
+          } else if (params[i].types.indexOf("@string") > -1) {
             final[i] = str;
-          } else if (params[i].types.indexOf('@boolean') > -1) {
-            final[i] = str === 'true' || str === 'yes';
+          } else if (params[i].types.indexOf("@boolean") > -1) {
+            final[i] = str === "true" || str === "yes";
           } else if (params[i].types.indexOf(str) > -1) {
             final[i] = str;
           } else {
-            return { error: i + ' parameter invalid'};
+            return { error: i + " parameter invalid" };
           }
-        } else if (typeof requestParams[i] === 'number') {
+        } else if (typeof requestParams[i] === "number") {
           final[i] = requestParams[i];
         }
       }
@@ -473,18 +549,24 @@ class Routes {
 
   private getBisqMarketErrorResponse(message: string): MarketsApiError {
     return {
-      'success': 0,
-      'error': message
+      success: 0,
+      error: message,
     };
   }
 
   public async getTransaction(req: Request, res: Response) {
     try {
-      const transaction = await transactionUtils.$getTransactionExtended(req.params.txId, true);
+      const transaction = await transactionUtils.$getTransactionExtended(
+        req.params.txId,
+        true
+      );
       res.json(transaction);
     } catch (e) {
       let statusCode = 500;
-      if (e.message && e.message.indexOf('No such mempool or blockchain transaction') > -1) {
+      if (
+        e.message &&
+        e.message.indexOf("No such mempool or blockchain transaction") > -1
+      ) {
         statusCode = 404;
       }
       res.status(statusCode).send(e.message || e);
@@ -493,11 +575,17 @@ class Routes {
 
   public async getTransactionStatus(req: Request, res: Response) {
     try {
-      const transaction = await transactionUtils.$getTransactionExtended(req.params.txId, true);
+      const transaction = await transactionUtils.$getTransactionExtended(
+        req.params.txId,
+        true
+      );
       res.json(transaction.status);
     } catch (e) {
       let statusCode = 500;
-      if (e.message && e.message.indexOf('No such mempool or blockchain transaction') > -1) {
+      if (
+        e.message &&
+        e.message.indexOf("No such mempool or blockchain transaction") > -1
+      ) {
         statusCode = 404;
       }
       res.status(statusCode).send(e.message || e);
@@ -516,7 +604,7 @@ class Routes {
   public async getBlockHeader(req: Request, res: Response) {
     try {
       const blockHeader = await bitcoinApi.$getBlockHeader(req.params.hash);
-      res.setHeader('content-type', 'text/plain');
+      res.setHeader("content-type", "text/plain");
       res.send(blockHeader);
     } catch (e) {
       res.status(500).send(e.message || e);
@@ -525,13 +613,16 @@ class Routes {
 
   public async getBlocks(req: Request, res: Response) {
     try {
-      loadingIndicators.setProgress('blocks', 0);
+      loadingIndicators.setProgress("blocks", 0);
 
       const returnBlocks: IEsploraApi.Block[] = [];
-      const fromHeight = parseInt(req.params.height, 10) || blocks.getCurrentBlockHeight();
+      const fromHeight =
+        parseInt(req.params.height, 10) || blocks.getCurrentBlockHeight();
 
       // Check if block height exist in local cache to skip the hash lookup
-      const blockByHeight = blocks.getBlocks().find((b) => b.height === fromHeight);
+      const blockByHeight = blocks
+        .getBlocks()
+        .find((b) => b.height === fromHeight);
       let startFromHash: string | null = null;
       if (blockByHeight) {
         startFromHash = blockByHeight.id;
@@ -550,44 +641,52 @@ class Routes {
           returnBlocks.push(block);
           nextHash = block.previousblockhash;
         }
-        loadingIndicators.setProgress('blocks', i / 10 * 100);
+        loadingIndicators.setProgress("blocks", (i / 10) * 100);
       }
 
       res.json(returnBlocks);
     } catch (e) {
-      loadingIndicators.setProgress('blocks', 100);
+      loadingIndicators.setProgress("blocks", 100);
       res.status(500).send(e.message || e);
     }
   }
 
   public async getBlockTransactions(req: Request, res: Response) {
     try {
-      loadingIndicators.setProgress('blocktxs-' + req.params.hash, 0);
+      loadingIndicators.setProgress("blocktxs-" + req.params.hash, 0);
 
       const txIds = await bitcoinApi.$getTxIdsForBlock(req.params.hash);
       const transactions: TransactionExtended[] = [];
-      const startingIndex = Math.max(0, parseInt(req.params.index || '0', 10));
+      const startingIndex = Math.max(0, parseInt(req.params.index || "0", 10));
 
       const endIndex = Math.min(startingIndex + 10, txIds.length);
       for (let i = startingIndex; i < endIndex; i++) {
         try {
-          const transaction = await transactionUtils.$getTransactionExtended(txIds[i], true);
+          const transaction = await transactionUtils.$getTransactionExtended(
+            txIds[i],
+            true
+          );
           transactions.push(transaction);
-          loadingIndicators.setProgress('blocktxs-' + req.params.hash, (i + 1) / endIndex * 100);
+          loadingIndicators.setProgress(
+            "blocktxs-" + req.params.hash,
+            ((i + 1) / endIndex) * 100
+          );
         } catch (e) {
-          logger.debug('getBlockTransactions error: ' + e.message || e);
+          logger.debug("getBlockTransactions error: " + e.message || e);
         }
       }
       res.json(transactions);
     } catch (e) {
-      loadingIndicators.setProgress('blocktxs-' + req.params.hash, 100);
+      loadingIndicators.setProgress("blocktxs-" + req.params.hash, 100);
       res.status(500).send(e.message || e);
     }
   }
 
   public async getBlockHeight(req: Request, res: Response) {
     try {
-      const blockHash = await bitcoinApi.$getBlockHash(parseInt(req.params.height, 10));
+      const blockHash = await bitcoinApi.$getBlockHash(
+        parseInt(req.params.height, 10)
+      );
       res.send(blockHash);
     } catch (e) {
       res.status(500).send(e.message || e);
@@ -595,8 +694,10 @@ class Routes {
   }
 
   public async getAddress(req: Request, res: Response) {
-    if (config.MEMPOOL.BACKEND === 'none') {
-      res.status(405).send('Address lookups cannot be used with bitcoind as backend.');
+    if (config.MEMPOOL.BACKEND === "none") {
+      res
+        .status(405)
+        .send("Address lookups cannot be used with bitcoind as backend.");
       return;
     }
 
@@ -604,7 +705,7 @@ class Routes {
       const addressData = await bitcoinApi.$getAddress(req.params.address);
       res.json(addressData);
     } catch (e) {
-      if (e.message && e.message.indexOf('exceeds') > 0) {
+      if (e.message && e.message.indexOf("exceeds") > 0) {
         return res.status(413).send(e.message);
       }
       res.status(500).send(e.message || e);
@@ -612,16 +713,21 @@ class Routes {
   }
 
   public async getAddressTransactions(req: Request, res: Response) {
-    if (config.MEMPOOL.BACKEND === 'none') {
-      res.status(405).send('Address lookups cannot be used with bitcoind as backend.');
+    if (config.MEMPOOL.BACKEND === "none") {
+      res
+        .status(405)
+        .send("Address lookups cannot be used with bitcoind as backend.");
       return;
     }
 
     try {
-      const transactions = await bitcoinApi.$getAddressTransactions(req.params.address, req.params.txId);
+      const transactions = await bitcoinApi.$getAddressTransactions(
+        req.params.address,
+        req.params.txId
+      );
       res.json(transactions);
     } catch (e) {
-      if (e.message && e.message.indexOf('exceeds') > 0) {
+      if (e.message && e.message.indexOf("exceeds") > 0) {
         return res.status(413).send(e.message);
       }
       res.status(500).send(e.message || e);
@@ -629,7 +735,7 @@ class Routes {
   }
 
   public async getAdressTxChain(req: Request, res: Response) {
-    res.status(501).send('Not implemented');
+    res.status(501).send("Not implemented");
   }
 
   public async getAddressPrefix(req: Request, res: Response) {
@@ -644,13 +750,14 @@ class Routes {
   public async getRecentMempoolTransactions(req: Request, res: Response) {
     const latestTransactions = Object.entries(mempool.getMempool())
       .sort((a, b) => (b[1].firstSeen || 0) - (a[1].firstSeen || 0))
-      .slice(0, 10).map((tx) => Common.stripTransaction(tx[1]));
+      .slice(0, 10)
+      .map((tx) => Common.stripTransaction(tx[1]));
 
     res.json(latestTransactions);
   }
 
   public async getMempool(req: Request, res: Response) {
-    res.status(501).send('Not implemented');
+    res.status(501).send("Not implemented");
   }
 
   public async getMempoolTxIds(req: Request, res: Response) {
@@ -681,7 +788,7 @@ class Routes {
   }
 
   public getTransactionOutspends(req: Request, res: Response) {
-    res.status(501).send('Not implemented');
+    res.status(501).send("Not implemented");
   }
 
   public getDifficultyChange(req: Request, res: Response) {
@@ -697,7 +804,7 @@ class Routes {
       const timeAvgDiff = difficultyChange * 0.1;
 
       let timeAvgMins = 10;
-      if (timeAvgDiff > 0 ){
+      if (timeAvgDiff > 0) {
         timeAvgMins -= Math.abs(timeAvgDiff);
       } else {
         timeAvgMins += Math.abs(timeAvgDiff);
@@ -706,20 +813,19 @@ class Routes {
       const remainingBlocks = 2016 - blocksInEpoch;
       const timeAvgSeconds = timeAvgMins * 60;
       const remainingTime = remainingBlocks * timeAvgSeconds;
-      const estimatedRetargetDate = (remainingTime + now);
-      const totalTime = estimatedRetargetDate-DATime;
-      const progressPercent = 100 - ((remainingTime * 100) / totalTime);
+      const estimatedRetargetDate = remainingTime + now;
+      const totalTime = estimatedRetargetDate - DATime;
+      const progressPercent = 100 - (remainingTime * 100) / totalTime;
 
-      const result={
+      const result = {
         progressPercent,
         difficultyChange,
         estimatedRetargetDate,
         remainingBlocks,
         remainingTime,
         previousRetarget,
-      }
+      };
       res.json(result);
-
     } catch (e) {
       res.status(500).send(e.message || e);
     }
