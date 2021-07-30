@@ -25,8 +25,12 @@ export class LightningComponent implements OnInit {
 
   data$: any;
    ngOnInit() {
-    this.data$ = this.apiService.getGraphInfo$();
-    console.log(this.data$)
+    this.apiService.getGraphInfo$().subscribe(
+      data=>{
+        this.data$=data
+        console.log(this.data$)
+      }
+    );
   }
 
 }

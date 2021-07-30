@@ -1,21 +1,18 @@
-<div class="master-container">
-  <div class="mini-container">
-    <h4 class="mini-contianer-heading">Number of Nodes</h4>
-      <h5>{{ data$ }}</h5>
+<div class="master-container" >
+  <div class="mini-container" >
+    <h4 class="mini-contianer-heading" >Number of Nodes</h4>
+      <h2>{{ data$.num_nodes }}</h2>
    
   </div>
-  <div class="mini-container">
+  <div class="mini-container" >
     <h4 class="mini-contianer-heading">Number of Channels</h4>
-    <h1>7215</h1>
+    <h2>{{ data$.num_channels}}</h2>
   </div>
   <div class="mini-container">
     <h4 class="mini-contianer-heading">Network Capacity</h4>
-    <h3>46,020,279,438</h3>
+    <h2>{{ data$.total_network_capacity }}</h2>
   </div>
-  <div class="mini-container">
-    <h4 class="mini-contianer-heading">Node Countdown</h4>
-    <h3>989,829</h3>
-  </div>
+ 
 </div>
 
 <div class="master-container">

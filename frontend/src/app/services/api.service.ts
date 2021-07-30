@@ -98,6 +98,6 @@ export class ApiService {
   }
 
   getGraphInfo$():Observable<any> {
-    return this.httpClient.get<any>(this.apiBaseUrl + this.apiBasePath + 'api/v1/graph-info');
+    return this.httpClient.get<any>('http://127.0.0.1:8999/api/v1/graph-info');
   }
 }
