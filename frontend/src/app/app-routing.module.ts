@@ -30,7 +30,7 @@ let routes: Routes = [
       {
         path: 'lightning',
         component: LightningComponent
-      }, 
+      },
       {
         path: '',
         component: StartComponent,

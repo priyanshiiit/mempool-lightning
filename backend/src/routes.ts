@@ -130,7 +130,9 @@ class Routes {
   //Lightning
   public async getGraphInfo(req: Request, res: Response) {
     try {
+      console.log('reached try block');
       let result = await lightningApi.$getGraphInfo();
+      console.log('got API');
       res.json(result);
     } catch (e) {
       res.status(500).send(e.message || e);
