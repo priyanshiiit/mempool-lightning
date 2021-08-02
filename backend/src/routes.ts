@@ -147,6 +147,16 @@ class Routes {
     }
   }
 
+  public async getLatestNodes(req: Request, res: Response) {
+    try {
+      let result = await lightningApi.$getLatestNodes();
+      console.log(result)
+      res.json(result);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  }
+
   public getBisqStats(req: Request, res: Response) {
     const result = bisq.getStats();
     res.json(result);

@@ -43,6 +43,27 @@ class LightningApi {
         return response.data;
       });
   }
+
+  $getLatestNodes(): Promise<ILightningApi.Node>{
+    let options = {
+      // Work-around for self-signed certificates.
+      rejectUnauthorized: false,
+      json: true,
+      headers: {
+        "Grpc-Metadata-macaroon": macaroon,
+      },
+    };
+
+    return axios
+      .get(`http://localhost:8080/v1/graph`, options)
+      .then((response) => {
+        const nodes= response.data.nodes;
+        nodes.sort(function(a,b){return b.last_update-a.last_update});
+        const tenLatestNodes=nodes.slice(0,10);
+        return tenLatestNodes;
+      });
+  }
+
 }
 
 export default LightningApi;
