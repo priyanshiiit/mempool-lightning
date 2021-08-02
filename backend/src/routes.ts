@@ -137,6 +137,16 @@ class Routes {
     }
   }
 
+  public async getNodeInfo(req: Request, res: Response) {
+    try {
+      let result = await lightningApi.$getNodeInfo(req.params.pub_key);
+      console.log(result)
+      res.json(result);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  }
+
   public getBisqStats(req: Request, res: Response) {
     const result = bisq.getStats();
     res.json(result);
