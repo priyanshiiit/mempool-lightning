@@ -1,0 +1,69 @@
+<div class="lightning-dashboard-container" >
+  <div class="lightning-master-container" >
+    <div class="lightning-mini-container" >
+      <h4 class="mini-contianer-heading" >Number of Nodes</h4>
+        <h2>{{ data$.num_nodes }}</h2>
+    
+    </div>
+    <div class="lightning-mini-container" >
+      <h4 class="mini-contianer-heading">Number of Channels</h4>
+      <h2>{{ data$.num_channels}}</h2>
+    </div>
+  </div>
+  <div class="lightning-master-container" >
+    <div class="lightning-mini-container" >
+      <h4 class="mini-contianer-heading" >Network Capacity</h4>
+        <h2>{{ data$.total_network_capacity }}</h2>
+    
+    </div>
+    <div class="lightning-mini-container" >
+      <h4 class="mini-contianer-heading">Node Countdown</h4>
+      <h2></h2>
+    </div>
+  </div>
+  <div class="lightning-master-container" >
+    <div class="lightning-mini-container" >
+      <h4 class="mini-contianer-heading" >Channels Opened Graph</h4>
+      <img src="https://ak.picdn.net/shutterstock/videos/16504675/thumb/4.jpg" alt="">
+
+    
+    </div>
+    <div class="lightning-mini-container" >
+      <h4 class="mini-contianer-heading">Channels Closed Graph</h4>
+      <img src="https://ak.picdn.net/shutterstock/videos/16504675/thumb/4.jpg" alt="">
+    </div>
+  </div>
+  <div class="lightning-master-container" >
+    <div class="lightning-update-container" >
+      <h4 class="mini-contianer-heading" >Latest Channels Table</h4>
+      <table class='lightning-update-table'>
+        <tr>
+          <th>Public Key</th>
+          <th>No. of Channels</th>
+          <th>Capacity</th>
+        </tr>
+        <tr>
+          <th>Pub_key</th>
+          <th>21</th>
+          <th>4239048 sat</th>
+        </tr>
+      </table>
+
+    </div>
+    <div class="lightning-update-container" >
+      <h4 class="mini-contianer-heading">Latest Nodes Table</h4>
+      <table class='lightning-update-table'>
+        <tr>
+          <th>Public Key</th>
+          <th>No. of Channels</th>
+          <th>Capacity</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingSponsors>
+  <br>
+  <div class="spinner-border text-light"></div>
+</ng-template>

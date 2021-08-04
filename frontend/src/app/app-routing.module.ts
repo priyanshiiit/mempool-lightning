@@ -19,7 +19,11 @@ import { TermsOfServiceComponent } from './components/terms-of-service/terms-of-
 import { TrademarkPolicyComponent } from './components/trademark-policy/trademark-policy.component';
 import { BisqMasterPageComponent } from './components/bisq-master-page/bisq-master-page.component';
 import { SponsorComponent } from './components/sponsor/sponsor.component';
-import { LightningComponent } from './lightning/lightning.component';
+import { LightningComponent } from './lightning/lightning-dashboard/lightning.component';
+import { LightningChannelComponent } from './lightning/lightning-channel/lightning-channel.component';
+import { LightningNodeComponent } from './lightning/lightning-node/lightning-node.component';
+
+
 
 
 let routes: Routes = [
@@ -29,7 +33,20 @@ let routes: Routes = [
     children: [
       {
         path: 'lightning',
-        component: LightningComponent
+        children:[
+          {
+            path: '',
+            component: LightningComponent
+          },
+          {
+            path: 'channel',
+            component: LightningChannelComponent
+          },
+          {
+            path: 'node',
+            component: LightningNodeComponent
+          },
+        ]
       },
       {
         path: '',
