@@ -25,6 +25,8 @@ export namespace ILightningApi {
     addresses: NodeAddress[];
     color: string;
     features: object;
+    total_capacity:string,
+    num_channels:number
   }
 
   export interface Channel {
@@ -51,6 +53,7 @@ export namespace ILightningApi {
   export interface NodeInfo {
     node: Node;
     num_channels: number;
+    pub_key:string;
     total_capacity: string;
     channels: Channel[];
   }

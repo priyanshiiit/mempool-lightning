@@ -140,7 +140,6 @@ class Routes {
   public async getNodeInfo(req: Request, res: Response) {
     try {
       let result = await lightningApi.$getNodeInfo(req.params.pub_key);
-      console.log(result)
       res.json(result);
     } catch (e) {
       res.status(500).send(e.message || e);
@@ -150,7 +149,6 @@ class Routes {
   public async getLatestNodes(req: Request, res: Response) {
     try {
       let result = await lightningApi.$getLatestNodes();
-      console.log(result)
       res.json(result);
     } catch (e) {
       res.status(500).send(e.message || e);
