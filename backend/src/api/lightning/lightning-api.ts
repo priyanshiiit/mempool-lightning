@@ -100,6 +100,43 @@ class LightningApi {
     //      }
     // return finalNodes
   }
+
+  $getLatestChannels(): Promise<ILightningApi.Channel>{
+    let options = {
+      // Work-around for self-signed certificates.
+      rejectUnauthorized: false,
+      json: true,
+      headers: {
+        "Grpc-Metadata-macaroon": macaroon,
+      },
+    };
+
+    return axios
+    .get("http://localhost:8080/v1/graph", options)
+    .then((response) => {
+      const channels= response.data.edges;
+      channels.sort(function(a,b){return b.last_update-a.last_update});
+      const tenLatestChannels=channels.slice(0,10);
+      return tenLatestChannels;
+    });
+
+  }
+  $getChannelInfo(chan_id:string):Promise<ILightningApi.Channel>{
+    let options = {
+      // Work-around for self-signed certificates.
+      rejectUnauthorized: false,
+      json: true, 
+      headers: {
+        'Grpc-Metadata-macaroon': macaroon,
+      },
+    }
+
+    return axios
+    .get(`http://localhost:8080/v1/graph/edge/${chan_id}`, options)
+    .then((response) => {
+      return response.data;
+    });
+  }
 }
 
 export default LightningApi;
