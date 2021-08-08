@@ -43,7 +43,15 @@ let routes: Routes = [
             component: LightningChannelComponent
           },
           {
+            path: 'channel/:chan_id',
+            component: LightningChannelComponent
+          },
+          {
             path: 'node',
+            component: LightningNodeComponent
+          },
+          {
+            path: 'node/:pub_key',
             component: LightningNodeComponent
           },
         ]

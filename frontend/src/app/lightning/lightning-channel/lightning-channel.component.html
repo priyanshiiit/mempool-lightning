@@ -1,25 +1,25 @@
 <div class="lightning-dashboard-container" >
-  <h1>Channel Id: {{'{'}}channel_id{{'}'}}</h1>
+  <h1>Channel Id: {{chanInfo$.channel_id}}</h1>
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading" >Age</h4>
-        <h2></h2>
+      <h4 class="mini-contianer-heading" >Channel Point</h4>
+        <h2>{{chanInfo$.chan_point | shortenString : 10}}</h2>
     
     </div>
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading">Capacity</h4>
-      <h2></h2>
+      <h2>{{chanInfo$.capacity}}</h2>
     </div>
   </div>
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading" >Transaction</h4>
-        <h2></h2>
+      <h4 class="mini-contianer-heading" >Status</h4>
+        <h2>Active</h2>
     
     </div>
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading">Last Update</h4>
-      <h2></h2>
+      <h2>{{chanInfo$.last_update}}</h2>
     </div>
   </div>
   <h1>Nodes</h1>
@@ -27,19 +27,26 @@
     <div class="lightning-update-container" >
       <h4 class="mini-contianer-heading" >Peer 1</h4>
       <table class='lightning-update-table'>
-        <tr>
-          <th>Public Key</th>
-          <th>Fee Rate</th>
-          <th>Base Fee</th>
-          <th>Max HTLC</th>
-          <th>Min HTLC</th>
-          <th>Timelock Delta</th>
-        </tr>
-        <tr>
-          <th>Pub_key</th>
-          <th>21</th>
-          <th>4239048 sat</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>Public Key</th>
+            <th>Fee Rate</th>
+            <th>Base Fee</th>
+            <th>Max HTLC</th>
+            <th>Min HTLC</th>
+            <th>Timelock Delta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{chanInfo$.node1_pub | shortenString : 10}}</td>
+            <td>{{chanInfo$.node1_policy.fee_rate_milli_msat}}</td>
+            <td>{{chanInfo$.node1_policy.fee_base_msat}}</td>
+            <td>{{chanInfo$.node1_policy.max_htlc_msat}}</td>
+            <td>{{chanInfo$.node1_policy.min_htlc}}</td>
+            <td>{{chanInfo$.node1_policy.time_lock_delta}}</td>
+          </tr>
+        </tbody>
       </table>
 
     </div>
@@ -57,9 +64,12 @@
           <th>Timelock Delta</th>
         </tr>
         <tr>
-          <th>Pub_key</th>
-          <th>21</th>
-          <th>4239048 sat</th>
+          <td>{{chanInfo$.node2_pub | shortenString : 10}}</td>
+          <td>{{chanInfo$.node2_policy.fee_rate_milli_msat}}</td>
+          <td>{{chanInfo$.node2_policy.fee_base_msat}}</td>
+          <td>{{chanInfo$.node2_policy.max_htlc_msat}}</td>
+          <td>{{chanInfo$.node2_policy.min_htlc}}</td>
+          <td>{{chanInfo$.node2_policy.time_lock_delta}}</td>
         </tr>
       </table>
 

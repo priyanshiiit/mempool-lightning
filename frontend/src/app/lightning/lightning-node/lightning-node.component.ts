@@ -5,6 +5,7 @@ import { StateService } from '../../services/state.service';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { IBackendInfo } from '../../interfaces/websocket.interface';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,16 +20,18 @@ export class LightningNodeComponent implements OnInit {
   constructor(
     private stateService: StateService,
     private apiService: ApiService,
+    private router: ActivatedRoute,
   ) { }
 
   
-
-  data$: any;
+  pub_key=this.router.snapshot.params.pub_key;
+  nodeInfo$: any;
    ngOnInit() {
-    this.apiService.getGraphInfo$().subscribe(
+    console.log(this.router.snapshot.params.pub_key)
+    this.apiService.getNodeInfo$(this.pub_key).subscribe(
       data=>{
-        this.data$=data
-        console.log(this.data$)
+        this.nodeInfo$=data
+        console.log(this.nodeInfo$)
       }
     );
   }

@@ -127,7 +127,7 @@ class Routes {
     res.json(backendInfo.getBackendInfo());
   }
 
-  //Lightning
+  //LIGHTNING
   public async getGraphInfo(req: Request, res: Response) {
     try {
       console.log('reached try block');
@@ -135,9 +135,49 @@ class Routes {
       console.log('got API');
       res.json(result);
     } catch (e) {
+      console.log(e)
       res.status(500).send(e.message || e);
     }
   }
+
+  public async getNodeInfo(req: Request, res: Response) {
+    try {
+      let result = await lightningApi.$getNodeInfo(req.params.pub_key);
+      console.log(result)
+      res.json(result);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  }
+
+  public async getLatestNodes(req: Request, res: Response) {
+    try {
+      let result = await lightningApi.$getLatestNodes();
+      res.json(result);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  }
+
+  public async getLatestChannels(req: Request, res: Response) {
+    try {
+      let result = await lightningApi.$getLatestChannels();
+      res.json(result);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  }
+
+  public async getChannelInfo(req: Request, res: Response) {
+    try {
+      let result = await lightningApi.$getChannelInfo(req.params.chan_id);
+      console.log(result)
+      res.json(result);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  }
+  //LIGHTNING ENDS
 
   public getBisqStats(req: Request, res: Response) {
     const result = bisq.getStats();

@@ -100,4 +100,16 @@ export class ApiService {
   getGraphInfo$():Observable<any> {
     return this.httpClient.get<any>('http://127.0.0.1:8999/api/v1/graph-info');
   }
+  getNodeInfo$(pub_key: string):Observable<any> {
+    return this.httpClient.get<any>(`http://127.0.0.1:8999/api/v1/node/${pub_key}`);
+  }
+  getLatestNodes$(): Observable<any>{
+    return this.httpClient.get<any>('http://127.0.0.1:8999/api/v1/latest_nodes');
+  }
+  getLatestChannels$(): Observable<any>{
+    return this.httpClient.get<any>('http://127.0.0.1:8999/api/v1/latest_channels');
+  }
+  getChannelInfo$(chan_id: string):Observable<any> {
+    return this.httpClient.get<any>(`http://127.0.0.1:8999/api/v1/channel/${chan_id}`);
+  }
 }

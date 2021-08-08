@@ -5,6 +5,7 @@ import { StateService } from '../../services/state.service';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { IBackendInfo } from '../../interfaces/websocket.interface';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,16 +20,17 @@ export class LightningChannelComponent implements OnInit {
   constructor(
     private stateService: StateService,
     private apiService: ApiService,
+    private router: ActivatedRoute,
   ) { }
 
-  
+  chan_id=this.router.snapshot.params.chan_id;
 
-  data$: any;
+  chanInfo$: any;
    ngOnInit() {
-    this.apiService.getGraphInfo$().subscribe(
+    this.apiService.getChannelInfo$(this.chan_id).subscribe(
       data=>{
-        this.data$=data
-        console.log(this.data$)
+        this.chanInfo$=data
+        console.log(this.chanInfo$)
       }
     );
   }

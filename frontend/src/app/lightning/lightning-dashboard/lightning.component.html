@@ -7,7 +7,7 @@
     </div>
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading">Number of Channels</h4>
-      <h2>{{ data$.num_channels}}</h2>
+      <h2>{{ data$.num_channels}} </h2>
     </div>
   </div>
   <div class="lightning-master-container" >
@@ -17,8 +17,8 @@
     
     </div>
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading">Node Countdown</h4>
-      <h2></h2>
+      <h4 class="mini-contianer-heading">Average Channel Size</h4>
+      <h2>{{ data$.avg_channel_size }}</h2>
     </div>
   </div>
   <div class="lightning-master-container" >
@@ -37,27 +37,44 @@
     <div class="lightning-update-container" >
       <h4 class="mini-contianer-heading" >Latest Channels Table</h4>
       <table class='lightning-update-table'>
-        <tr>
-          <th>Public Key</th>
-          <th>No. of Channels</th>
-          <th>Capacity</th>
-        </tr>
-        <tr>
-          <th>Pub_key</th>
-          <th>21</th>
-          <th>4239048 sat</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>Channel Id</th>
+            <th>Capacity</th>
+            <th>Node 1</th>
+            <th>Node 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <div style="display:none">{{latestChannels$[0]}}</div>
+          <tr *ngFor="let channel of latestChannels$">
+            <td><a [routerLink]="['/lightning/channel' | relativeUrl, channel.channel_id]">{{ channel.channel_id | shortenString : 10 }}</a></td>
+            <td>{{ channel.capacity }}</td>
+            <td><a [routerLink]="['/lightning/node' | relativeUrl, channel.node1_pub]">{{ channel.node1_pub | shortenString : 10 }}</a></td>
+            <td><a [routerLink]="['/lightning/node' | relativeUrl, channel.node2_pub]">{{ channel.node2_pub | shortenString : 10 }}</a></td>
+          </tr>
+      </tbody>
       </table>
 
     </div>
     <div class="lightning-update-container" >
       <h4 class="mini-contianer-heading">Latest Nodes Table</h4>
       <table class='lightning-update-table'>
-        <tr>
-          <th>Public Key</th>
-          <th>No. of Channels</th>
-          <th>Capacity</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>Public Key</th>
+            <th>Alias</th>
+            <th>Color</th>
+          </tr>
+        </thead>
+        <tbody>
+          <div style="display:none">{{latestNodes$[0]}}</div>
+          <tr *ngFor="let node of latestNodes$">
+            <td><a [routerLink]="['/lightning/node' | relativeUrl, node.pub_key]">{{ node.pub_key | shortenString : 10 }}</a></td>
+            <td>{{ node.alias }}</td>
+            <td [ngStyle]="{'color':node.color}"class='latest-node-color'>{{ node.color }}</td>
+          </tr>
+      </tbody>
       </table>
     </div>
   </div>
