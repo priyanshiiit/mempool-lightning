@@ -157,6 +157,9 @@ class Server {
       .get(config.MEMPOOL.API_URL_PREFIX +'graph-info', routes.getGraphInfo)
       .get(config.MEMPOOL.API_URL_PREFIX +'node/:pub_key', routes.getNodeInfo)
       .get(config.MEMPOOL.API_URL_PREFIX +'latest_nodes', routes.getLatestNodes)
+      .get(config.MEMPOOL.API_URL_PREFIX +'latest_channels', routes.getLatestChannels)
+      .get(config.MEMPOOL.API_URL_PREFIX +'channel/:chan_id', routes.getChannelInfo)
+
       .get(config.MEMPOOL.API_URL_PREFIX + 'difficulty-adjustment', routes.getDifficultyChange)
       .get(config.MEMPOOL.API_URL_PREFIX + 'fees/recommended', routes.getRecommendedFees)
       .get(config.MEMPOOL.API_URL_PREFIX + 'fees/mempool-blocks', routes.getMempoolBlocks)

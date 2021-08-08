@@ -1,10 +1,11 @@
 
 import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { SeoService } from 'src/app/services/seo.service';
-import { StateService } from 'src/app/services/state.service';
+import { SeoService } from '../../services/seo.service';
+import { filter, map, scan, share, switchMap, tap } from 'rxjs/operators';
+import { StateService } from '../../services/state.service';
 import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/services/api.service';
-import { IBackendInfo } from 'src/app/interfaces/websocket.interface';
+import { ApiService } from '../../services/api.service';
+import { IBackendInfo } from '../../interfaces/websocket.interface';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,6 +25,8 @@ export class LightningComponent implements OnInit {
   
 
   data$: any;
+  latestNodes$: any;
+  latestChannels$: any;
    ngOnInit() {
     this.apiService.getGraphInfo$().subscribe(
       data=>{
@@ -31,6 +34,17 @@ export class LightningComponent implements OnInit {
         console.log(this.data$)
       }
     );
+    this.apiService.getLatestNodes$().subscribe(
+      data=>{
+        this.latestNodes$=data;
+        console.log(this.latestNodes$);
+      }
+    );
+    this.apiService.getLatestChannels$().subscribe(
+      data=>{
+        this.latestChannels$=data;
+        console.log(this.latestChannels$);
+      }
+    );
   }
-
 }

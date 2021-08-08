@@ -53,6 +53,9 @@ import { TrademarkPolicyComponent } from './components/trademark-policy/trademar
 import { StorageService } from './services/storage.service';
 import { HttpCacheInterceptor } from './services/http-cache.interceptor';
 import { SponsorComponent } from './components/sponsor/sponsor.component';
+import { LightningComponent } from './lightning/lightning-dashboard/lightning.component';
+import { LightningNodeComponent } from './lightning/lightning-node/lightning-node.component';
+import { LightningChannelComponent } from './lightning/lightning-channel/lightning-channel.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +94,9 @@ import { SponsorComponent } from './components/sponsor/sponsor.component';
     TermsOfServiceComponent,
     TrademarkPolicyComponent,
     SponsorComponent,
+    LightningComponent,
+    LightningNodeComponent,
+    LightningChannelComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

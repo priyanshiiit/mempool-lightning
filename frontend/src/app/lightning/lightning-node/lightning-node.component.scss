@@ -1,0 +1,57 @@
+.lightning-dashboard-container{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  }
+
+.lightning-master-container{
+  justify-content:center;
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  width: 70%;
+}
+
+.lightning-mini-container{
+  flex: 1;
+  margin: 10px;
+  height: 170px;
+  background-color: #1d1f31;
+  color: white;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius:.25rem;
+  text-align: center;
+}
+
+.lightning-update-container{
+  flex: 1;
+  margin: 10px;
+  background-color: #1d1f31;
+  color: white;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius:.25rem;
+  text-align: center;
+  justify-content: center;
+}
+
+.network-capacity-container{
+  flex: 1;
+  margin: 10px;
+  height: 170px;
+  background-color: #1d1f31;
+  color: white;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius:.25rem;
+  text-align: center;
+}
+
+img{
+  width: 80%;
+  height: 60%;
+}
+
+.lightning-update-table tr,.lightning-update-table{
+  width:100%;
+}
+
