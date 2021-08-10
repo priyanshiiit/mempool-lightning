@@ -3,7 +3,7 @@
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading" >Channel Point</h4>
-        <h2>{{chanInfo$.chan_point | shortenString : 10}}</h2>
+        <h2><a [routerLink]="['/tx' | relativeUrl, chanInfo$.chan_point | slice : 0:-2 ]">{{chanInfo$.chan_point | shortenString : 10}}</a></h2>
     
     </div>
     <div class="lightning-mini-container" >
@@ -39,7 +39,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{chanInfo$.node1_pub | shortenString : 10}}</td>
+            <td><a [routerLink]="['/lightning/node' | relativeUrl, chanInfo$.node1_pub]">{{chanInfo$.node1_pub | shortenString : 10}}</a></td>
             <td>{{chanInfo$.node1_policy.fee_rate_milli_msat}}</td>
             <td>{{chanInfo$.node1_policy.fee_base_msat}}</td>
             <td>{{chanInfo$.node1_policy.max_htlc_msat}}</td>
@@ -64,7 +64,7 @@
           <th>Timelock Delta</th>
         </tr>
         <tr>
-          <td>{{chanInfo$.node2_pub | shortenString : 10}}</td>
+          <td ><a [routerLink]="['/lightning/node' | relativeUrl, chanInfo$.node2_pub]">{{chanInfo$.node2_pub | shortenString : 10}}</a></td>
           <td>{{chanInfo$.node2_policy.fee_rate_milli_msat}}</td>
           <td>{{chanInfo$.node2_policy.fee_base_msat}}</td>
           <td>{{chanInfo$.node2_policy.max_htlc_msat}}</td>

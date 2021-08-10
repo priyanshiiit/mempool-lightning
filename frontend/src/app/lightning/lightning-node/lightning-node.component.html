@@ -42,14 +42,16 @@
         <thead>
           <tr>
             <th>Channel Id</th>
-            <th>Peer</th>
+            <th>Node 1</th>
+            <th>Node 2</th>
             <th>Capacity</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let channel of nodeInfo$.channels">
             <td><a [routerLink]="['/lightning/channel' | relativeUrl, channel.channel_id]">{{channel.channel_id}}</a></td>
-            <td><a [routerLink]="['/lightning/node' | relativeUrl, channel.node1_pub]">{{channel.node1_pub}}</a></td>
+            <td><a [routerLink]="['/lightning/node' | relativeUrl, channel.node1_pub]">{{channel.node1_pub | shortenString : 20}}</a></td>
+            <td><a [routerLink]="['/lightning/node' | relativeUrl, channel.node2_pub]">{{channel.node2_pub | shortenString : 20}}</a></td>
             <td>{{channel.capacity}}</td>
           </tr>
         </tbody>
