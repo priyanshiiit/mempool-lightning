@@ -25,7 +25,6 @@ import { LightningNodeComponent } from './lightning/lightning-node/lightning-nod
 
 
 
-
 let routes: Routes = [
   {
     path: '',

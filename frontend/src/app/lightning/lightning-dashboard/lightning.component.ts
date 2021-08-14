@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { IBackendInfo } from '../../interfaces/websocket.interface';
 import { Router } from '@angular/router';
+import { getValueInRange } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Component({
   selector: 'app-lightning',
@@ -20,9 +21,19 @@ export class LightningComponent implements OnInit {
   constructor(
     private stateService: StateService,
     private apiService: ApiService,
+    private router: Router
   ) { }
 
-  
+  searchVal="";
+
+  getVal(val){
+    console.log(val);
+    this.searchVal = val;
+    if(this.searchVal.length === 19)
+    {
+      this.router.navigateByUrl('/lightning/channel/'+val);
+    }
+  }
 
   data$: any;
   latestNodes$: any;
@@ -45,6 +56,6 @@ export class LightningComponent implements OnInit {
         this.latestChannels$=data;
         console.log(this.latestChannels$);
       }
-    );
+    )
   }
 }

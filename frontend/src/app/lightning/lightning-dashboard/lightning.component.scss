@@ -1,3 +1,22 @@
+.lightning-search{
+  margin: 10px;
+  background-color: #1d1f31;
+  color: white;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius:.25rem;
+  width: 50%;
+  flex-direction: column;
+  display: flex;
+}
+.search-field, input{
+  width:100%;
+}
+input{
+  height: 100%;
+}
+form{
+  display: flex;
+}
 .lightning-dashboard-container{
   display: flex;
   justify-content: center;

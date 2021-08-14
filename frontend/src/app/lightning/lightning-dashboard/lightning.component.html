@@ -1,4 +1,14 @@
 <div class="lightning-dashboard-container" >
+  <div class="lightning-search">
+    <form action="">
+      <div class="search-field">
+        <input #search type="text" placeholder="Node Pub Key, Channel ID, Alias"/>
+      </div>
+      <div class="search-btn">
+        <button type='button' (click)="getVal(search.value)" class="btn btn-block btn-success"> Submit </button>
+      </div>
+    </form>
+  </div>
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading" >Number of Nodes</h4>
