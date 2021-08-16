@@ -47,7 +47,7 @@ export class SearchFormComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       searchText: ['', Validators.required],
     });
-
+    
     if (this.network === 'liquid') {
       this.assetsService.getAssetsMinimalJson$
         .subscribe((assets) => {
@@ -115,6 +115,17 @@ export class SearchFormComponent implements OnInit {
       } else {
         this.isSearching = false;
       }
+    }
+    if(this.network === 'lightning')
+    {
+      if(searchText.length === 19)
+    {
+      this.router.navigateByUrl('/lightning/channel/'+searchText);
+    }
+    if(searchText.length === 66)
+    {
+      this.router.navigateByUrl('/lightning/node/'+searchText);
+    }
     }
   }
 

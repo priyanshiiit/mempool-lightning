@@ -3,6 +3,7 @@
   "SIGNET_ENABLED": false,
   "LIQUID_ENABLED": false,
   "BISQ_ENABLED": false,
+  "LIGHTNING_ENABLED":false,
   "BISQ_SEPARATE_BACKEND": false,
   "ITEMS_PER_PAGE": 10,
   "KEEP_BLOCKS_AMOUNT": 8,

@@ -24,16 +24,20 @@ export class LightningComponent implements OnInit {
     private router: Router
   ) { }
 
-  searchVal="";
+  // searchVal="";
 
-  getVal(val){
-    console.log(val);
-    this.searchVal = val;
-    if(this.searchVal.length === 19)
-    {
-      this.router.navigateByUrl('/lightning/channel/'+val);
-    }
-  }
+  // getVal(val){
+  //   console.log(val);
+  //   this.searchVal = val;
+  //   if(this.searchVal.length === 19)
+  //   {
+  //     this.router.navigateByUrl('/lightning/channel/'+val);
+  //   }
+  //   if(this.searchVal.length === 66)
+  //   {
+  //     this.router.navigateByUrl('/lightning/node/'+val);
+  //   }
+  // }
 
   data$: any;
   latestNodes$: any;

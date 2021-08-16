@@ -49,9 +49,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let channel of nodeInfo$.channels">
-            <td><a [routerLink]="['/lightning/channel' | relativeUrl, channel.channel_id]">{{channel.channel_id}}</a></td>
-            <td><a [routerLink]="['/lightning/node' | relativeUrl, channel.node1_pub]">{{channel.node1_pub | shortenString : 20}}</a></td>
-            <td><a [routerLink]="['/lightning/node' | relativeUrl, channel.node2_pub]">{{channel.node2_pub | shortenString : 20}}</a></td>
+            <td><a [routerLink]="['/channel' | relativeUrl, channel.channel_id]">{{channel.channel_id}}</a></td>
+            <td><a [routerLink]="['/node' | relativeUrl, channel.node1_pub]">{{channel.node1_pub | shortenString : 20}}</a></td>
+            <td><a [routerLink]="['/node' | relativeUrl, channel.node2_pub]">{{channel.node2_pub | shortenString : 20}}</a></td>
             <td>{{channel.capacity}}</td>
           </tr>
         </tbody>

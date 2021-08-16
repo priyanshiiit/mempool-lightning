@@ -19,6 +19,7 @@ export interface Env {
   TESTNET_ENABLED: boolean;
   SIGNET_ENABLED: boolean;
   LIQUID_ENABLED: boolean;
+  LIGHTNING_ENABLED: boolean;
   BISQ_ENABLED: boolean;
   BISQ_SEPARATE_BACKEND: boolean;
   ITEMS_PER_PAGE: number;
@@ -36,6 +37,7 @@ const defaultEnv: Env = {
   'TESTNET_ENABLED': false,
   'SIGNET_ENABLED': false,
   'LIQUID_ENABLED': false,
+  'LIGHTNING_ENABLED':true,
   'OFFICIAL_BISQ_MARKETS': false,
   'BISQ_ENABLED': false,
   'BISQ_SEPARATE_BACKEND': false,
@@ -111,7 +113,7 @@ export class StateService {
   }
 
   setNetworkBasedonUrl(url: string) {
-    const networkMatches = url.match(/\/(bisq|testnet|liquid|signet)/);
+    const networkMatches = url.match(/\/(bisq|testnet|liquid|signet|lightning)/);
     switch (networkMatches && networkMatches[1]) {
       case 'liquid':
         if (this.network !== 'liquid') {
@@ -135,6 +137,11 @@ export class StateService {
         if (this.network !== 'bisq') {
           this.network = 'bisq';
           this.networkChanged$.next('bisq');
+        }
+      case 'lightning':
+        if (this.network !== 'lightning') {
+          this.network = 'lightning';
+          this.networkChanged$.next('lightning');
         }
         return;
       default:
