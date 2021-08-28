@@ -23,24 +23,24 @@
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading" >Network Capacity</h4>
-        <h2 class="containter-data">{{ data$.total_network_capacity }} SAT</h2>
+        <h2 class="containter-data">{{ data$.total_network_capacity }} <span class="satoshi">sat</span></h2>
     
     </div>
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading">Average Channel Size</h4>
-      <h2 class="containter-data">{{ data$.avg_channel_size }} SAT</h2>
+      <h2 class="containter-data">{{ data$.avg_channel_size }} <span class="satoshi">sat</span></h2>
     </div>
   </div>
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading" >Channels Opened Graph(Work Under Progress)</h4>
-      <img src="https://ak.picdn.net/shutterstock/videos/16504675/thumb/4.jpg" alt="">
+      <div echarts [options]="channelGraphOptions" class="demo-chart"></div>
 
     
     </div>
     <div class="lightning-mini-container" >
       <h4 class="mini-contianer-heading">Channels Closed Graph(Work Under Progress)</h4>
-      <img src="https://ak.picdn.net/shutterstock/videos/16504675/thumb/4.jpg" alt="">
+      <div echarts [options]="nodeGraphOptions" class="demo-chart"></div>
     </div>
   </div>
   <div class="lightning-master-container" >

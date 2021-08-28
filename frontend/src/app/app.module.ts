@@ -56,6 +56,7 @@ import { SponsorComponent } from './components/sponsor/sponsor.component';
 import { LightningComponent } from './lightning/lightning-dashboard/lightning.component';
 import { LightningNodeComponent } from './lightning/lightning-node/lightning-node.component';
 import { LightningChannelComponent } from './lightning/lightning-channel/lightning-channel.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,9 @@ import { LightningChannelComponent } from './lightning/lightning-channel/lightni
     NgbTypeaheadModule,
     FontAwesomeModule,
     SharedModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
   ],
   providers: [
     ElectrsApiService,

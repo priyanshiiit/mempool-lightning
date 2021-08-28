@@ -17,6 +17,8 @@ import { Router } from '@angular/router';
 
 export class LightningNodeComponent implements OnInit {
 
+  channelGraphOptions: any;
+
   constructor(
     private stateService: StateService,
     private apiService: ApiService,
@@ -34,6 +36,49 @@ export class LightningNodeComponent implements OnInit {
         console.log(this.nodeInfo$)
       }
     );
+        //Channel Graph Data
+        const channelGraphXAxisData = [];
+        const channelGraphData1 = [];
+        const channelGraphData2 = [];
+    
+        for (let i = 0; i < 100; i++) {
+          channelGraphXAxisData.push(i);
+          channelGraphData1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
+          channelGraphData2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
+        }
+    
+        this.channelGraphOptions = {
+          legend: {
+            data: ['bar', 'bar2'],
+            align: 'left',
+          },
+          tooltip: {},
+          xAxis: {
+            data: channelGraphXAxisData,
+            silent: false,
+            splitLine: {
+              show: false,
+            },
+          },
+          yAxis: {},
+          series: [
+            {
+              name: 'bar',
+              type: 'bar',
+              data: channelGraphData1,
+              animationDelay: (idx) => idx * 10,
+            },
+            {
+              name: 'bar2',
+              type: 'bar',
+              data: channelGraphData2,
+              animationDelay: (idx) => idx * 10 + 100,
+            },
+          ],
+          animationEasing: 'elasticOut',
+          animationDelayUpdate: (idx) => idx * 5,
+        };
+        //Channel Graph Data Ends
   }
 
 }

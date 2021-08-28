@@ -24,7 +24,6 @@ import { LightningChannelComponent } from './lightning/lightning-channel/lightni
 import { LightningNodeComponent } from './lightning/lightning-node/lightning-node.component';
 
 
-
 let routes: Routes = [
   {
     path: '',
