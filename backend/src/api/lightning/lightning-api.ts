@@ -58,6 +58,37 @@ class LightningApi {
       //     return response.data;
       //   });
     }
+    $getNodes(): Promise<ILightningApi.Node>{
+      let options = {
+        url: `http://localhost:8080/v1/graph`,
+        // Work-around for self-signed certificates.
+        rejectUnauthorized: false,
+        json: true,
+        headers: {
+          "Grpc-Metadata-macaroon": this.macaroon,
+        },
+      };
+
+      return new Promise((resolve,reject) => {
+        request.get(options, function(error, response, body) {
+          const nodes= body.nodes;
+          nodes.sort(function(a,b){return b.last_update-a.last_update});
+          const latestNodes=nodes;
+          resolve(latestNodes);
+            });
+          })
+  
+      return axios
+        .get(`http://localhost:8080/v1/graph`, options)
+        .then((response) => {
+          const nodes= response.data.nodes;
+          nodes.sort(function(a,b){return b.last_update-a.last_update});
+          const tenLatestNodes=nodes.slice(0,10);
+          return tenLatestNodes;
+        });
+      
+    }
+
   
     $getLatestNodes(): Promise<ILightningApi.Node>{
       let options = {
@@ -76,6 +107,37 @@ class LightningApi {
           nodes.sort(function(a,b){return b.last_update-a.last_update});
           const tenLatestNodes=nodes.slice(0,10);
           resolve(tenLatestNodes);
+            });
+          })
+  
+      return axios
+        .get(`http://localhost:8080/v1/graph`, options)
+        .then((response) => {
+          const nodes= response.data.nodes;
+          nodes.sort(function(a,b){return b.last_update-a.last_update});
+          const tenLatestNodes=nodes.slice(0,10);
+          return tenLatestNodes;
+        });
+      
+    }
+
+    $getChannels(): Promise<ILightningApi.Channel>{
+      let options = {
+        url: `http://localhost:8080/v1/graph`,
+        // Work-around for self-signed certificates.
+        rejectUnauthorized: false,
+        json: true,
+        headers: {
+          "Grpc-Metadata-macaroon": this.macaroon,
+        },
+      };
+
+      return new Promise((resolve,reject) => {
+        request.get(options, function(error, response, body) {
+          const channels= body.edges;
+          channels.sort(function(a,b){return b.last_update-a.last_update});
+          const latestChannels=channels;
+          resolve(latestChannels);
             });
           })
   

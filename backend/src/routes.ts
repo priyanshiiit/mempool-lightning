@@ -149,11 +149,32 @@ class Routes {
       res.status(500).send(e.message || e);
     }
   }
+  public async getNodes(req: Request, res: Response) {
+    try {
+      const {page} = req.query;
+      let result = await lightningApi.$getNodes();
+      console.log(result.slice(Number(page)-1,Number(page)*50-1));
+      res.json(result.slice((Number(page)-1)*50,Number(page)*50-1));
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  }
 
   public async getLatestNodes(req: Request, res: Response) {
     try {
       let result = await lightningApi.$getLatestNodes();
       res.json(result);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  }
+
+  public async getChannels(req: Request, res: Response) {
+    try {
+      const {page} = req.query;
+      let result = await lightningApi.$getChannels();
+      console.log(result.slice(Number(page)-1,Number(page)*50-1));
+      res.json(result.slice((Number(page)-1)*50,Number(page)*50-1));
     } catch (e) {
       res.status(500).send(e.message || e);
     }

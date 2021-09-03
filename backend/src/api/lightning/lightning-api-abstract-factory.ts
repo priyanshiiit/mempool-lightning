@@ -6,4 +6,6 @@ export interface AbstractLightningApi {
   $getNodeInfo(pub_key:string): Promise<ILightningApi.NodeInfo>
   $getLatestChannels(): Promise<ILightningApi.Channel>
   $getChannelInfo(chan_id:string):Promise<ILightningApi.Channel>
+  $getChannels()
+  $getNodes()
 }
