@@ -2,60 +2,60 @@
   <h3>Public Key: {{ pub_key }}</h3>
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading" >Alias</h4>
+      <h4 class="mini-container-heading" >Alias</h4>
         <h2>{{nodeInfo$.node.alias}}</h2>
     
     </div>
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading">Channel Count</h4>
+      <h4 class="mini-container-heading">Channel Count</h4>
       <h2>{{nodeInfo$.num_channels}}</h2>
     </div>
   </div>
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading" >Node Capacity</h4>
+      <h4 class="mini-container-heading" >Node Capacity</h4>
         <h2>{{nodeInfo$.total_capacity}}</h2>
     
     </div>
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading">Color</h4>
+      <h4 class="mini-container-heading">Color</h4>
       <h2>{{nodeInfo$.node.color}}</h2>
     </div>
   </div>
   <div class="lightning-master-container" >
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading" >Channels Graph</h4>
+      <h4 class="mini-container-heading" >Channels Graph</h4>
       <div echarts [options]="channelGraphOptions" class="demo-chart"></div>
 
     
     </div>
     <div class="lightning-mini-container" >
-      <h4 class="mini-contianer-heading">Capacity Graph</h4>
+      <h4 class="mini-container-heading">Capacity Graph</h4>
       <div echarts [options]="channelGraphOptions" class="demo-chart"></div>
     </div>
   </div>
-  <h1>Channels</h1>
   <div class="lightning-master-container" >
     <div class="lightning-update-container" >
-      <h4 class="mini-contianer-heading" >Latest Channels Table</h4>
+      <h4 class="mini-container-heading" >CHANNELS</h4>
       <table class='lightning-update-table'>
         <thead>
           <tr>
-            <th>Channel Id</th>
+            <th style="text-align: left;">Channel Id</th>
             <th>Node 1</th>
             <th>Node 2</th>
             <th>Capacity</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let channel of nodeInfo$.channels">
-            <td><a [routerLink]="['/channel' | relativeUrl, channel.channel_id]">{{channel.channel_id}}</a></td>
+          <tr *ngFor="let channel of nodeInfo$.channels.slice(0,10)">
+            <td style="text-align: left;"><a [routerLink]="['/channel' | relativeUrl, channel.channel_id]">{{channel.channel_id}}</a></td>
             <td><a [routerLink]="['/node' | relativeUrl, channel.node1_pub]">{{channel.node1_pub | shortenString : 20}}</a></td>
             <td><a [routerLink]="['/node' | relativeUrl, channel.node2_pub]">{{channel.node2_pub | shortenString : 20}}</a></td>
             <td>{{channel.capacity}}</td>
           </tr>
         </tbody>
       </table>
+      <p><a [routerLink]="['/lightning','node',pub_key,'channels']">View all »</a></p>
 
     </div>
   </div>

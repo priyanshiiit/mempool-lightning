@@ -1,0 +1,27 @@
+<div class="lightning-dashboard-container" >
+  <h3>Public Key: {{ pub_key }}</h3>
+      <h4 class="mini-container-heading" >CHANNELS</h4>
+      <table class='lightning-update-table'>
+        <thead>
+          <tr>
+            <th style="text-align: left;">Channel Id</th>
+            <th>Node 1</th>
+            <th>Node 2</th>
+            <th>Capacity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let channel of nodeInfo$.channels">
+            <td style="text-align: left;"><a [routerLink]="['/channel' | relativeUrl, channel.channel_id]">{{channel.channel_id}}</a></td>
+            <td><a [routerLink]="['/node' | relativeUrl, channel.node1_pub]">{{channel.node1_pub | shortenString : 20}}</a></td>
+            <td><a [routerLink]="['/node' | relativeUrl, channel.node2_pub]">{{channel.node2_pub | shortenString : 20}}</a></td>
+            <td>{{channel.capacity}}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+<ng-template #loadingSponsors>
+  <br>
+  <div class="spinner-border text-light"></div>
+</ng-template>

@@ -1,0 +1,30 @@
+<div class="lightning-dashboard-container" >
+  <div class="lightning-master-container" >
+    <div class="lightning-update-container" >
+      <h4 class="mini-container-heading">Latest Nodes</h4>
+      <table class='lightning-update-table'>
+        <thead>
+          <tr>
+            <th>Public Key</th>
+            <th>Alias</th>
+            <th>Color</th>
+          </tr>
+        </thead>
+        <tbody>
+          <div style="display:none">{{latestNodes$[0]}}</div>
+          <tr *ngFor="let node of latestNodes$">
+            <td><a [routerLink]="['/node' | relativeUrl, node.pub_key]">{{ node.pub_key | shortenString : 20 }}</a></td>
+            <td>{{ node.alias }}</td>
+            <td [ngStyle]="{'color':node.color}"class='latest-node-color'>{{ node.color }}</td>
+          </tr>
+      </tbody>
+      </table>
+      <p><a [routerLink]="">View all »</a></p>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingSponsors>
+  <br>
+  <div class="spinner-border text-light"></div>
+</ng-template>

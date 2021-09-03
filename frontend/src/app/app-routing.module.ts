@@ -22,6 +22,9 @@ import { SponsorComponent } from './components/sponsor/sponsor.component';
 import { LightningComponent } from './lightning/lightning-dashboard/lightning.component';
 import { LightningChannelComponent } from './lightning/lightning-channel/lightning-channel.component';
 import { LightningNodeComponent } from './lightning/lightning-node/lightning-node.component';
+import { LightningNodeChannelsComponent } from './lightning/lightning-node-channels/lightning-node-channels.component';
+import { LightningChannelsComponent } from './lightning/lightning-channels/lightning-channels.component'
+import {LightningNodesComponent} from './lightning/lightning-nodes/lightnin-nodes.component';
 
 
 let routes: Routes = [
@@ -51,6 +54,18 @@ let routes: Routes = [
           {
             path: 'node/:pub_key',
             component: LightningNodeComponent
+          },
+          {
+            path: 'node/:pub_key/channels',
+            component: LightningNodeChannelsComponent
+          },
+          {
+            path: 'channels',
+            component: LightningChannelsComponent
+          },
+          {
+            path: 'nodes',
+            component: LightningNodesComponent
           },
         ]
       },

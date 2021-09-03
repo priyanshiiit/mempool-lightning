@@ -56,7 +56,10 @@ import { SponsorComponent } from './components/sponsor/sponsor.component';
 import { LightningComponent } from './lightning/lightning-dashboard/lightning.component';
 import { LightningNodeComponent } from './lightning/lightning-node/lightning-node.component';
 import { LightningChannelComponent } from './lightning/lightning-channel/lightning-channel.component';
+import { LightningNodeChannelsComponent } from './lightning/lightning-node-channels/lightning-node-channels.component';
+import { LightningChannelsComponent } from './lightning/lightning-channels/lightning-channels.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { LightningNodesComponent } from './lightning/lightning-nodes/lightnin-nodes.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +101,9 @@ import { NgxEchartsModule } from 'ngx-echarts';
     LightningComponent,
     LightningNodeComponent,
     LightningChannelComponent,
+    LightningNodeChannelsComponent,
+    LightningChannelsComponent,
+    LightningNodesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

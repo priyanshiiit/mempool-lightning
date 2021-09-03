@@ -1,0 +1,34 @@
+<div class="lightning-dashboard-container" >
+  <div class="lightning-master-container" >
+    <div class="lightning-update-container" >
+      <h4 class="mini-container-heading" >Latest Channels</h4>
+      <table class='lightning-update-table'>
+        <thead>
+          <tr>
+            <th>Channel Id</th>
+            <th>Capacity</th>
+            <th>Node 1</th>
+            <th>Node 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <div style="display:none">{{latestChannels$[0]}}</div>
+          <tr *ngFor="let channel of latestChannels$">
+            <td><a [routerLink]="['/channel' | relativeUrl, channel.channel_id]">{{ channel.channel_id }}</a></td>
+            <td>{{ channel.capacity }}</td>
+            <td><a [routerLink]="['/node' | relativeUrl, channel.node1_pub]">{{ channel.node1_pub | shortenString : 10 }}</a></td>
+            <td><a [routerLink]="['/node' | relativeUrl, channel.node2_pub]">{{ channel.node2_pub | shortenString : 10 }}</a></td>
+          </tr>
+      </tbody>
+      </table>
+      <p><a [routerLink]="">View all »</a></p>
+
+
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingSponsors>
+  <br>
+  <div class="spinner-border text-light"></div>
+</ng-template>

@@ -1,8 +1,35 @@
+.lightning-search{
+  margin: 10px;
+  background-color: #1d1f31;
+  color: white;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius:.25rem;
+  width: 50%;
+  flex-direction: column;
+  display: flex;
+}
 .mini-container-heading{
   color: #4a68b9 !important;
   font-size: 1rem;
 }
-
+.satoshi{
+  color: #ffffff66;
+  font-size: 12px;
+  top: 0;
+}
+.container-data{
+  font-size: 22px !important;
+  font-weight: 400;
+}
+.search-field, input{
+  width:100%;
+}
+input{
+  height: 100%;
+}
+form{
+  display: flex;
+}
 .lightning-dashboard-container{
   display: flex;
   justify-content: center;
@@ -59,8 +86,7 @@ img{
 .lightning-update-table tr,.lightning-update-table{
   width:100%;
   border-collapse: separate;
-  border-spacing: 20px 15px;
-  padding-left: 20px;
+  border-spacing: 0 15px;
 }
 
 
