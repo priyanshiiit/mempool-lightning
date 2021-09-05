@@ -6,6 +6,7 @@
         <thead>
           <tr>
             <th>Channel Id</th>
+            <th>Last Update</th>
             <th>Capacity</th>
             <th>Node 1</th>
             <th>Node 2</th>
@@ -15,13 +16,14 @@
           <div style="display:none">{{latestChannels$[0]}}</div>
           <tr *ngFor="let channel of latestChannels$">
             <td><a [routerLink]="['/channel' | relativeUrl, channel.channel_id]">{{ channel.channel_id }}</a></td>
+            <td>{{ timestamp(channel.last_update) }}</td>
             <td>{{ channel.capacity }}</td>
             <td><a [routerLink]="['/node' | relativeUrl, channel.node1_pub]">{{ channel.node1_pub | shortenString : 10 }}</a></td>
             <td><a [routerLink]="['/node' | relativeUrl, channel.node2_pub]">{{ channel.node2_pub | shortenString : 10 }}</a></td>
           </tr>
       </tbody>
       </table>
-      <p><a [routerLink]="">View all »</a></p>
+      <ngb-pagination [pageSize]="50" [collectionSize]="data$.num_channels" [maxSize]="5" [(page)]="page" [boundaryLinks]="true" (pageChange)="pageChange(page)"></ngb-pagination>
 
 
     </div>

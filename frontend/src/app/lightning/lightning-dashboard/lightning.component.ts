@@ -49,19 +49,16 @@ export class LightningComponent implements OnInit {
     this.apiService.getGraphInfo$().subscribe(
       data=>{
         this.data$=data
-        console.log(this.data$)
       }
     );
     this.apiService.getLatestNodes$().subscribe(
       data=>{
         this.latestNodes$=data;
-        console.log(this.latestNodes$);
       }
     );
     this.apiService.getLatestChannels$().subscribe(
       data=>{
         this.latestChannels$=data;
-        console.log(this.latestChannels$);
       }
     )
     //Channel Graph Data
