@@ -24,7 +24,8 @@ export class LightningNodesComponent implements OnInit {
   constructor(
     private stateService: StateService,
     private apiService: ApiService,
-    private router: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
   // searchVal="";
@@ -41,7 +42,7 @@ export class LightningNodesComponent implements OnInit {
   //     this.router.navigateByUrl('/lightning/node/'+val);
   //   }
   // }
-  page = this.router.snapshot.queryParams.page;
+  page = this.activatedRoute.snapshot.queryParams.page;
   data$: any;
   latestNodes$: any;
   latestChannels$: any;
@@ -61,90 +62,28 @@ export class LightningNodesComponent implements OnInit {
         this.latestChannels$=data;
       }
     )
-    //Channel Graph Data
-    const channelGraphXAxisData = [];
-    const channelGraphData1 = [];
-    const channelGraphData2 = [];
-
-    for (let i = 0; i < 100; i++) {
-      channelGraphXAxisData.push(i);
-      channelGraphData1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-      channelGraphData2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
-    }
-
-    this.channelGraphOptions = {
-      legend: {
-        data: ['bar', 'bar2'],
-        align: 'left',
-      },
-      tooltip: {},
-      xAxis: {
-        data: channelGraphXAxisData,
-        silent: false,
-        splitLine: {
-          show: false,
-        },
-      },
-      yAxis: {},
-      series: [
-        {
-          name: 'bar',
-          type: 'bar',
-          data: channelGraphData1,
-          animationDelay: (idx) => idx * 10,
-        },
-        {
-          name: 'bar2',
-          type: 'bar',
-          data: channelGraphData2,
-          animationDelay: (idx) => idx * 10 + 100,
-        },
-      ],
-      animationEasing: 'elasticOut',
-      animationDelayUpdate: (idx) => idx * 5,
-    };
-    //Channel Graph Data Ends
-    //Node Graph Data
-    const nodeGraphXAxisData = [];
-    const nodeGraphData1 = [];
-    const nodeGraphData2 = [];
-
-    for (let i = 0; i < 100; i++) {
-      nodeGraphXAxisData.push(i);
-      nodeGraphData1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-      nodeGraphData2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
-    }
-
-    this.nodeGraphOptions = {
-      legend: {
-        data: ['bar', 'bar2'],
-        align: 'left',
-      },
-      tooltip: {},
-      xAxis: {
-        data: nodeGraphXAxisData,
-        silent: false,
-        splitLine: {
-          show: false,
-        },
-      },
-      yAxis: {},
-      series: [
-        {
-          name: 'bar',
-          type: 'bar',
-          data: nodeGraphData1,
-          animationDelay: (idx) => idx * 10,
-        },
-        {
-          name: 'bar2',
-          type: 'bar',
-          data: nodeGraphData2,
-          animationDelay: (idx) => idx * 10 + 100,
-        },
-      ],
-      animationEasing: 'elasticOut',
-      animationDelayUpdate: (idx) => idx * 5,
-    };
+  }
+  pageChange(page: number) {
+    this.apiService.getNodes$(this.page).subscribe(
+      data=>{
+        this.latestNodes$=data;
+      }
+    )
+      this.router.navigate([], {
+        queryParams: { page: page },
+        queryParamsHandling: 'merge',
+      })
+  }
+  timestamp(UNIX_timestamp: number){
+    var a = new Date(UNIX_timestamp * 1000);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var time = date + '-' + month + '-' + year + ' ' + hour + ':' + min + ':' + sec ;
+  return time;
   }
 }

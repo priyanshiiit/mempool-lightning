@@ -48,11 +48,15 @@ export class LightningChannelsComponent implements OnInit {
     )
   }
   pageChange(page: number) {
-    this.router.navigate([], {
-      queryParams: { page: page },
-      queryParamsHandling: 'merge',
-    })
-    this.ngOnInit();
+    this.apiService.getChannels$(this.page).subscribe(
+      data=>{
+        this.latestChannels$=data;
+      }
+    )
+      this.router.navigate([], {
+        queryParams: { page: page },
+        queryParamsHandling: 'merge',
+      })
   }
   timestamp(UNIX_timestamp: number){
     var a = new Date(UNIX_timestamp * 1000);

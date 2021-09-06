@@ -130,9 +130,7 @@ class Routes {
   //LIGHTNING
   public async getGraphInfo(req: Request, res: Response) {
     try {
-      console.log('reached try block');
       let result = await lightningApi.$getGraphInfo();
-      console.log('got API');
       res.json(result);
     } catch (e) {
       console.log(e)
@@ -143,7 +141,6 @@ class Routes {
   public async getNodeInfo(req: Request, res: Response) {
     try {
       let result = await lightningApi.$getNodeInfo(req.params.pub_key);
-      console.log(result)
       res.json(result);
     } catch (e) {
       res.status(500).send(e.message || e);
@@ -153,7 +150,6 @@ class Routes {
     try {
       const {page} = req.query;
       let result = await lightningApi.$getNodes();
-      console.log(result.slice(Number(page)-1,Number(page)*50-1));
       res.json(result.slice((Number(page)-1)*50,Number(page)*50-1));
     } catch (e) {
       res.status(500).send(e.message || e);
@@ -173,7 +169,6 @@ class Routes {
     try {
       const {page} = req.query;
       let result = await lightningApi.$getChannels();
-      console.log(result.slice(Number(page)-1,Number(page)*50-1));
       res.json(result.slice((Number(page)-1)*50,Number(page)*50-1));
     } catch (e) {
       res.status(500).send(e.message || e);
@@ -192,7 +187,6 @@ class Routes {
   public async getChannelInfo(req: Request, res: Response) {
     try {
       let result = await lightningApi.$getChannelInfo(req.params.chan_id);
-      console.log(result)
       res.json(result);
     } catch (e) {
       res.status(500).send(e.message || e);

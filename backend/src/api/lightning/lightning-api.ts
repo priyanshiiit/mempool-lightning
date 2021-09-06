@@ -21,8 +21,6 @@ class LightningApi {
     'Grpc-Metadata-macaroon': this.macaroon,
   },
     };
-    console.log(this.macaroon);
-    console.log('getting api')
     
     return new Promise((resolve,reject) => {
     request.get(options, function(error, response, body) {
@@ -41,14 +39,9 @@ class LightningApi {
           "Grpc-Metadata-macaroon": this.macaroon,
         },
       };
-      console.log('reached 1')
-      console.log(options.url)
       return new Promise((resolve,reject) => {
         request.get(options, function(error, response, body) {
-        console.log(error)
-        console.log(body)
         resolve(body);
-        console.log('reached 3')
             });
           })
   

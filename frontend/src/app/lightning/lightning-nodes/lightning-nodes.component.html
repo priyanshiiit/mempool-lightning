@@ -6,6 +6,7 @@
         <thead>
           <tr>
             <th>Public Key</th>
+            <th>Last Update</th>
             <th>Alias</th>
             <th>Color</th>
           </tr>
@@ -14,12 +15,13 @@
           <div style="display:none">{{latestNodes$[0]}}</div>
           <tr *ngFor="let node of latestNodes$">
             <td><a [routerLink]="['/node' | relativeUrl, node.pub_key]">{{ node.pub_key | shortenString : 20 }}</a></td>
+            <td>{{ timestamp(node.last_update) }}</td>
             <td>{{ node.alias }}</td>
             <td [ngStyle]="{'color':node.color}"class='latest-node-color'>{{ node.color }}</td>
           </tr>
       </tbody>
       </table>
-      <p><a [routerLink]="">View all »</a></p>
+      <ngb-pagination [pageSize]="50" [collectionSize]="data$.num_nodes" [maxSize]="5" [(page)]="page" [boundaryLinks]="true" (pageChange)="pageChange(page)"></ngb-pagination>
     </div>
   </div>
 </div>
